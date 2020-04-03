@@ -19,7 +19,7 @@ exports.lambdaHandler = async (event) => {
         await dynamo
             .put({
                 TableName: TABLE_NAME,
-                Item: user,
+                Item: user
             })
             .promise();
 
@@ -27,8 +27,8 @@ exports.lambdaHandler = async (event) => {
             statusCode: 201,
             body: JSON.stringify({
                 message: 'Created!',
-                data: user,
-            }),
+                data: user
+            })
         };
     } catch (error) {
         console.error(error);

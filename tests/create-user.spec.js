@@ -1,8 +1,6 @@
 'use strict';
 const AWSMock = require('aws-sdk-mock');
 
-require('dotenv').config();
-
 describe('Creates a new user', () => {
     AWSMock.mock('DynamoDB.DocumentClient', 'put', (params, callback) => {
         callback(null, '');

@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 
-const dynamoOptions = { endpoint: 'http://dynamodb:8000' };
+const dynamoOptions = { endpoint: process.env.AWS_SAM_LOCAL === 'true' ? 'http://dynamodb:8000' : null };
 const dynamo = new AWS.DynamoDB.DocumentClient(dynamoOptions);
 
 const TABLE_NAME = 'auc_users';

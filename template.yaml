@@ -27,7 +27,7 @@ Resources:
         Properties:
             TableName: auc_users
             AttributeDefinitions:
-                - AttributeName: id
+                - AttributeName: Id
                   AttributeType: S
             KeySchema:
                 - AttributeName: id

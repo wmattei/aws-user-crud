@@ -1,15 +1,12 @@
-- Requirements
-Basic CRUD operations for user
-    - name
-    - email
-    - photo
-    - isActive
-    
-- Non-functional requirements
-    - Use AWS lambda functions
-    - Use AWS SAM 
-    - Use AWS API Gateway
-    - Use AWS S3 
-    - Use AWS SES
-    - Use Code pipeline
-    - Use jest
+-   Requirements
+    Basic CRUD operations for user - name - email - photo - isActive
+-   Non-functional requirements
+    -   [x] Use AWS lambda functions
+    -   [x] Use AWS SAM
+    -   [x] Use AWS API Gateway
+    -   [ ] Use DynamoDB as Database
+    -   [ ] Use jest
+    -   [ ] Use Code pipeline
+    -   [ ] Use AWS S3
+    -   [ ] Use AWS SES
+    -   [ ] Run DynamoDB locally for tests

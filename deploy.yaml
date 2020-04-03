@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Globals:
+    Function:
+        Timeout: 3
+Resources:
+    CreateUserFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            FunctionName: CreateUser
+            CodeUri: s3://aws-crud-user/226df78031f923e4e6601b7c8aeb3a07
+            Handler: main.lambdaHandler
+            Role: arn:aws:iam::063257378709:role/CrudLambdasRunner
+            Runtime: nodejs12.x
+            Events:
+                CreateUser:
+                    Type: Api
+                    Properties:
+                        Path: /user
+                        Method: post
+    UsersTable:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: auc_users
+            AttributeDefinitions:
+                - AttributeName: id
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: id
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+Outputs:
+    CreateUserApi:
+        Description: API Gateway endpoint URL for Prod stage for Create user function
+        Value:
+            Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/user/
+    CreateUserFunction:
+        Description: CreateUserFunction Lambda Function ARN
+        Value:
+            Fn::GetAtt:
+                - CreateUserFunction
+                - Arn

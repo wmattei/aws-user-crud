@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+    pre_build:
+        commands:
+            - sam validate
+            - npm install
+            - npm run lint
+            - npm run prettier
+            - npm run test
+    build:
+        commands:
+            - sam package --template-file template.yaml --s3-bucket $SAM_S3_BUCKET
+            - sam deploy --template-file deploy.yaml --stack-name $SAM_STACK_NAME --capabilities CAPABILITY_IAM --region $AWS_REGION

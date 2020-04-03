@@ -10,5 +10,5 @@ phases:
             - npm run test
     build:
         commands:
-            - sam package --template-file template.yaml --s3-bucket $SAM_S3_BUCKET
+            - sam package --template-file template.yaml --output-template-file deploy.yaml --s3-bucket $SAM_S3_BUCKET
             - sam deploy --template-file deploy.yaml --stack-name $SAM_STACK_NAME --capabilities CAPABILITY_IAM --region $AWS_REGION

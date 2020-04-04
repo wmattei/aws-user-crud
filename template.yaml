@@ -65,4 +65,4 @@ Outputs:
         Value: !Ref UtilsLayer
         Description: UtilsLayer ARN
         Export:
-            Name: utils-layer-arn
+            Name: utils-layer-arn-2

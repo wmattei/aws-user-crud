@@ -15,6 +15,8 @@ Resources:
             Handler: main.lambdaHandler
             Role: arn:aws:iam::063257378709:role/CrudLambdasRunner
             Runtime: nodejs12.x
+            Layers:
+                - !Ref UtilsLayer
             Events:
                 CreateUser:
                     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -35,6 +37,18 @@ Resources:
             ProvisionedThroughput:
                 ReadCapacityUnits: 5
                 WriteCapacityUnits: 5
+    
+    UtilsLayer: 
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+            LayerName: Utils
+            Description: Layer that includes some javascript helpers
+            ContentUri: lambda-layers/utils
+            CompatibleRuntimes:
+                - nodejs12.x
+            LicenseInfo: MIT
+            RetentionPolicy: Delete
+    
 
 Outputs:
     # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -46,3 +60,9 @@ Outputs:
     CreateUserFunction:
         Description: 'CreateUserFunction Lambda Function ARN'
         Value: !GetAtt CreateUserFunction.Arn
+        
+    UtilsLayerARN:
+        Value: !Ref UtilsLayer
+        Description: UtilsLayer ARN
+        Export:
+            Name: utils-layer-arn

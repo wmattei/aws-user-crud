@@ -1,12 +1,16 @@
 -   Requirements
-    Basic CRUD operations for user - name - email - photo - isActive
--   Non-functional requirements
+
+    -   CRUD of users
+    -   Optimize uploaded images
+    -   Cropp uploaded images
+
+*   Non-functional requirements
     -   [x] Use AWS lambda functions
     -   [x] Use AWS SAM
     -   [x] Use AWS API Gateway
-    -   [ ] Use DynamoDB as Database
-    -   [ ] Use jest
-    -   [ ] Use Code pipeline
+    -   [x] Use DynamoDB as Database
+    -   [x] Use jest
+    -   [x] Use Code pipeline
+    -   [x] Run DynamoDB locally for tests
     -   [ ] Use AWS S3
     -   [ ] Use AWS SES
-    -   [ ] Run DynamoDB locally for tests

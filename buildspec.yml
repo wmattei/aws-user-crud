@@ -8,7 +8,7 @@ phases:
             - npm run lint
             - npm run prettier
             - npm run test
-            - cd lambda-layers/utils/nodejs && npm install && ../../../
+            - npm --prefix ./lambda-layers/utils/nodejs install
     build:
         commands:
             - sam package --template-file template.yaml --output-template-file deploy.yaml --s3-bucket $SAM_S3_BUCKET

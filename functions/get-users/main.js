@@ -1,32 +1,32 @@
 const AWS = require('aws-sdk');
-const uuidv4 = require('uuid/v4');
-
 
 const dynamoOptions = { endpoint: process.env.AWS_SAM_LOCAL === 'true' ? 'http://dynamodb:8000' : null };
 const dynamo = new AWS.DynamoDB.DocumentClient(dynamoOptions);
 
 const TABLE_NAME = 'auc_users';
 
-
-exports.lambdaHandler = async event => {
+exports.lambdaHandler = async () => {
     try {
-        const user = { ...JSON.parse(event.body), Id: uuidv4() };
-        await dynamo
-            .put({
-                TableName: TABLE_NAME,
-                Item: user
+        const dbResponse = await dynamo
+            .scan({
+                TableName: TABLE_NAME
             })
             .promise();
 
         return {
-            statusCode: 201,
+            statusCode: 200,
             body: JSON.stringify({
-                message: 'Created!',
-                data: user
+                data: dbResponse.Items
             })
         };
     } catch (error) {
         console.error(error);
-        return error;
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: 'Something went wrong!',
+                data: error
+            })
+        };
     }
 };

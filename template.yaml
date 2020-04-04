@@ -23,6 +23,20 @@ Resources:
                     Properties:
                         Path: /user
                         Method: post
+    GetUsersFunction:
+        Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+        Properties:
+            FunctionName: GetUsers
+            CodeUri: functions/get-users
+            Handler: main.lambdaHandler
+            Role: arn:aws:iam::063257378709:role/CrudLambdasRunner
+            Runtime: nodejs12.x
+            Events:
+                GetUsers:
+                    Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+                    Properties:
+                        Path: /user
+                        Method: get
 
     UsersTable:
         Type: AWS::DynamoDB::Table
@@ -30,6 +44,10 @@ Resources:
             TableName: auc_users
             AttributeDefinitions:
                 - AttributeName: Id
+                  AttributeType: S
+                - AttributeName: name
+                  AttributeType: S
+                - AttributeName: email
                   AttributeType: S
             KeySchema:
                 - AttributeName: id
@@ -54,6 +72,13 @@ Outputs:
     # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
     # Find out more about other implicit resources you can reference within SAM
     # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+    GetUsersApi:
+        Description: 'API Gateway endpoint URL for Prod stage for Get users function'
+        Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/user/'
+    GetUsersFunction:
+        Description: 'GetUsersFunction Lambda Function ARN'
+        Value: !GetAtt GetUsersFunction.Arn
+        
     CreateUserApi:
         Description: 'API Gateway endpoint URL for Prod stage for Create user function'
         Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/user/'

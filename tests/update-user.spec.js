@@ -1,8 +1,8 @@
 'use strict';
 const AWSMock = require('aws-sdk-mock');
 
-describe('Delete an user', () => {
-    AWSMock.mock('DynamoDB.DocumentClient', 'delete', (params, callback) => {
+describe('Update an user', () => {
+    AWSMock.mock('DynamoDB.DocumentClient', 'update', (params, callback) => {
         if (params.Key.Id === 1) callback(null, {});
         callback(null, {
             Attributes: {
@@ -12,26 +12,26 @@ describe('Delete an user', () => {
             }
         });
     });
-    const handler = require('../functions/delete-user/main');
+    const handler = require('../functions/update-user/main');
 
     const user = { name: 'Wagner Mattei', email: 'wagner.mattei@gmail.com' };
 
     describe('Whit valid Id', () => {
         let response;
         beforeAll(async () => {
-            response = await handler.lambdaHandler({ pathParameters: { id: 2 } });
+            response = await handler.lambdaHandler({ pathParameters: { id: 2 }, body: JSON.stringify(user) });
         });
 
         test('The status should be 200', () => {
             expect(response.statusCode).toBe(200);
         });
 
-        test('The message should be Deleted', () => {
+        test('The message should be Updated', () => {
             const message = JSON.parse(response.body).message;
-            expect(message).toBe('Deleted succesfully!');
+            expect(message).toBe('Updated succesfully!');
         });
 
-        test('The data should be the deleted user', () => {
+        test('The data should be the updated user', () => {
             const deletedUser = JSON.parse(response.body).data;
             expect(deletedUser).toMatchObject(user);
         });
@@ -40,7 +40,7 @@ describe('Delete an user', () => {
     describe('Whit wrong Id', () => {
         let response;
         beforeAll(async () => {
-            response = await handler.lambdaHandler({ pathParameters: { id: 1 } });
+            response = await handler.lambdaHandler({ pathParameters: { id: 1 }, body: JSON.stringify(user) });
         });
 
         test('The status should be 404', () => {

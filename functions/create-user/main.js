@@ -1,12 +1,10 @@
 const AWS = require('aws-sdk');
 const uuidv4 = require('uuid/v4');
 
-
 const dynamoOptions = { endpoint: process.env.AWS_SAM_LOCAL === 'true' ? 'http://dynamodb:8000' : null };
 const dynamo = new AWS.DynamoDB.DocumentClient(dynamoOptions);
 
 const TABLE_NAME = 'auc_users';
-
 
 exports.lambdaHandler = async event => {
     try {

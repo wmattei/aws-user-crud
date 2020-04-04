@@ -37,6 +37,21 @@ Resources:
                     Properties:
                         Path: /user
                         Method: get
+                        
+    DeleteUserFunction:
+        Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+        Properties:
+            FunctionName: DeleteUser
+            CodeUri: functions/delete-user
+            Handler: main.lambdaHandler
+            Role: arn:aws:iam::063257378709:role/CrudLambdasRunner
+            Runtime: nodejs12.x
+            Events:
+                DeleteUser:
+                    Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+                    Properties:
+                        Path: /user/{id}
+                        Method: delete
 
     UsersTable:
         Type: AWS::DynamoDB::Table
@@ -85,6 +100,13 @@ Outputs:
     CreateUserFunction:
         Description: 'CreateUserFunction Lambda Function ARN'
         Value: !GetAtt CreateUserFunction.Arn
+        
+    DeleteUserApi:
+        Description: 'API Gateway endpoint URL for Prod stage for Delete user function'
+        Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/user/'
+    DeleteUserFunction:
+        Description: 'DeleteUserFunction Lambda Function ARN'
+        Value: !GetAtt DeleteUserFunction.Arn
         
     UtilsLayerARN:
         Value: !Ref UtilsLayer

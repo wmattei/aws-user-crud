@@ -36,11 +36,13 @@ describe('Get the list of users', () => {
     test('The data should contain all attributes', () => {
         const items = JSON.parse(response.body).data;
         items.forEach(item => {
-            expect(Object.keys(item)).toEqual(['Id', 'name', 'email']);
-            Object.keys(item).forEach(key => {
-                expect(item[key]).not.toBe(null);
-                expect(item[key]).not.toBe(undefined);
-            });
+            expect(Object.keys(item)).toEqual([
+                'Id',
+                'name',
+                'email',
+                '_presignedOriginalPhoto',
+                '_presignedCroppedPhoto'
+            ]);
         });
     });
 });

@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "sharp": "^0.25.2",
         "uuid": "7.0.3"
     }
 }

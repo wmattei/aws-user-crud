@@ -13,10 +13,40 @@ exports.lambdaHandler = async () => {
             })
             .promise();
 
+        const users = await Promise.all(
+            dbResponse.Items.map(async user => {
+                let url = null;
+                let croppedUrl = null;
+                if (user.originalPhotoFileId) {
+                    const s3Bucket = new AWS.S3({ params: { Bucket: 'user-original-photos' } });
+                    const date = new Date();
+                    date.setTime(date.getTime() + 1000);
+                    url = await s3Bucket.getSignedUrlPromise('getObject', {
+                        Key: user.originalPhotoFileId,
+                        Expires: 60 * 60
+                    });
+                }
+                if (user.croppedPhotoFileId) {
+                    const date = new Date();
+                    date.setTime(date.getTime() + 1000);
+                    const croppedBucket = new AWS.S3({ params: { Bucket: 'user-cropped-photos' } });
+                    croppedUrl = await croppedBucket.getSignedUrlPromise('getObject', {
+                        Key: user.croppedPhotoFileId,
+                        Expires: 60 * 60
+                    });
+                }
+                return {
+                    ...user,
+                    _presignedOriginalPhoto: url,
+                    _presignedCroppedPhoto: croppedUrl
+                };
+            })
+        );
+
         return {
             statusCode: 200,
             body: JSON.stringify({
-                data: dbResponse.Items
+                data: users
             })
         };
     } catch (error) {
